@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'test-unit', '~> 2.0'
   s.add_development_dependency 'rake-compiler', '~> 0.9.5'
   s.add_development_dependency 'rake-compiler-dock', '~> 0.5.1'
+  s.add_dependency 'bouncy-castle-java' if RUBY_PLATFORM =~ /java/
 
   s.summary = 'Ruby/EventMachine library'
   s.description = <<-EOT
