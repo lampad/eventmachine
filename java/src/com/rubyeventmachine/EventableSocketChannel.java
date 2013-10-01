@@ -66,6 +66,7 @@ public class EventableSocketChannel implements EventableChannel {
 	
 	SSLEngine sslEngine;
 	SSLContext sslContext;
+	private boolean bIsServer;
 
 	public EventableSocketChannel (SocketChannel sc, long _binding, Selector sel) {
 		channel = sc;
@@ -77,6 +78,7 @@ public class EventableSocketChannel implements EventableChannel {
 		bAttached = false;
 		bNotifyReadable = false;
 		bNotifyWritable = false;
+		bIsServer = false;
 		outboundQ = new LinkedList<ByteBuffer>();
 		outboundS = 0;
 	}
@@ -411,5 +413,9 @@ public class EventableSocketChannel implements EventableChannel {
 		}
 
 		return events;
+	}
+
+	public void setServerMode() {
+		bIsServer = true;
 	}
 }
