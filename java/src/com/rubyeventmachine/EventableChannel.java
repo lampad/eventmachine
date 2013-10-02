@@ -63,8 +63,6 @@ public abstract class EventableChannel<OutboundPacketType> {
 		return binding;
 	}
 
-	protected abstract void readInboundData(ByteBuffer dst) throws IOException;
-
 	public abstract void register() throws ClosedChannelException;
 
 	/**
@@ -88,6 +86,9 @@ public abstract class EventableChannel<OutboundPacketType> {
 	public abstract boolean isNotifyReadable();
 
 	public abstract boolean isNotifyWritable();
+	
+	
+	protected abstract void readInboundData(ByteBuffer dst) throws IOException;
 
 	public boolean read() {
 		if (isWatchOnly()) {
@@ -109,6 +110,8 @@ public abstract class EventableChannel<OutboundPacketType> {
 		}
 
 	}
+
+	protected abstract boolean writeOutboundData() throws IOException;
 
 	public boolean write() {
 		if (isWatchOnly()) {
