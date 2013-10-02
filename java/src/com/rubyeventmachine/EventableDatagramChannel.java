@@ -50,7 +50,6 @@ public class EventableDatagramChannel extends EventableChannel {
 	}
 	
 	DatagramChannel channel;
-	Selector selector;
 	boolean bCloseScheduled;
 	LinkedList<Packet> outboundQ;
 	long outboundS;
@@ -58,9 +57,8 @@ public class EventableDatagramChannel extends EventableChannel {
 	
 
 	public EventableDatagramChannel (DatagramChannel dc, long _binding, Selector sel) throws ClosedChannelException {
-		super(_binding);
+		super(_binding, sel);
 		channel = dc;
-		selector = sel;
 		bCloseScheduled = false;
 		outboundQ = new LinkedList<Packet>();
 		outboundS = 0;
