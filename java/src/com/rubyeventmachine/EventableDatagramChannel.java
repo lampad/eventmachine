@@ -173,4 +173,14 @@ public class EventableDatagramChannel extends EventableChannel<DatagramPacket> {
 	public boolean isNotifyReadable() { return false; }
 	public boolean isNotifyWritable() { return false; }
 	public long getOutboundDataSize() { return outboundS; }
+
+	@Override
+	protected boolean handshakeNeeded() {
+		return false;
+	}
+
+	@Override
+	protected boolean performHandshake() {
+		return true;
+	}
 }
