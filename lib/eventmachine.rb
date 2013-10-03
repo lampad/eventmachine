@@ -1542,8 +1542,8 @@ module EventMachine
       c = @conns[conn_binding] or raise ConnectionNotBound, "received SslHandshakeCompleted for unknown signature: #{conn_binding}"
       c.ssl_handshake_completed
     when SslVerify
-      c = @conns[conn_binding] or raise ConnectionNotBound, "received SslVerify for unknown signature: #{conn_binding}"
-      c.close_connection if c.ssl_verify_peer(data) == false
+      c = @conns[conn_binding] or raise ConnectionNotBound
+      EventMachine::ssl_verify_peer c, data
     end
   end
 

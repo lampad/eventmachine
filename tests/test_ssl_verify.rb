@@ -38,7 +38,7 @@ class TestSslVerify < Test::Unit::TestCase
 
   module AcceptServer
     def post_init
-      start_tls(:verify_peer => true)
+        start_tls(:private_key_file => $dir+'server.key', :cert_chain_file => $dir+'server.crt', :verify_peer => true)
     end
 
     def ssl_verify_peer(cert)
@@ -53,7 +53,7 @@ class TestSslVerify < Test::Unit::TestCase
 
   module DenyServer
     def post_init
-      start_tls(:verify_peer => true)
+      start_tls(:private_key_file => $dir+'server.key', :cert_chain_file => $dir+'server.crt', :verify_peer => true)
     end
 
     def ssl_verify_peer(cert)
@@ -106,7 +106,7 @@ class TestSslVerify < Test::Unit::TestCase
       EM.connect("127.0.0.1", 16784, Client).instance_variable_get("@signature")
     }
 
-    assert_equal($cert_from_file, $cert_from_server)
+    assert_equal($cert_from_file, $cert_from_server).gsub("\r", ""))
     assert($client_handshake_completed)
     assert($server_handshake_completed)
   end
@@ -121,7 +121,7 @@ class TestSslVerify < Test::Unit::TestCase
       EM.connect("127.0.0.1", 16784, Client)
     }
 
-    assert_equal($cert_from_file, $cert_from_server)
+    assert_equal($cert_from_file, $cert_from_server).gsub("\r", ""))
     assert(!$client_handshake_completed)
     assert(!$server_handshake_completed)
   end
