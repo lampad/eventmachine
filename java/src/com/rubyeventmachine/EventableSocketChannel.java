@@ -160,8 +160,7 @@ public class EventableSocketChannel extends EventableChannel<ByteBuffer> {
 	
 	public void scheduleOutboundData (ByteBuffer bb) {
 		if (!bCloseScheduled && bb.remaining() > 0) {
-//			outboundQ.addLast( (sslBox != null) ? sslBox.encryptOutboundBuffer(bb) : bb ); 
-			outboundQ.addLast( bb ); 
+			outboundQ.addLast( bb );
 			updateEvents();
 		}
 	}
@@ -174,7 +173,8 @@ public class EventableSocketChannel extends EventableChannel<ByteBuffer> {
 	 * Called by the reactor when we have selected readable.
 	 */
 	public void readInboundData (ByteBuffer bb) throws IOException {
-		if (channel.read(bb) == -1)
+		int bytesRead = (sslBox != null) ? sslBox.read(bb) : channel.read(bb);
+		if (bytesRead == -1)
 			throw new IOException ("eof");
 	}
 
@@ -195,16 +195,13 @@ public class EventableSocketChannel extends EventableChannel<ByteBuffer> {
 		int i;
 		long written, toWrite;
 		while (!outboundQ.isEmpty()) {
-			i = 0;
-			toWrite = 0;
-			written = 0;
-			while (i < 64 && !outboundQ.isEmpty()) {
-				bufs[i] = outboundQ.removeFirst();
-				toWrite += bufs[i].remaining();
-				i++;
+			ByteBuffer b = outboundQ.getFirst();
+			if (b.remaining() > 0) {
+				if (sslBox != null) 
+					sslBox.write(b);
+				else
+					channel.write(b);
 			}
-			if (toWrite > 0)
-				written = channel.write(bufs, 0, i);
 
 			outboundS -= written;
 			// Did we consume the whole outbound buffer? If yes,
