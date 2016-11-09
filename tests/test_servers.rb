@@ -24,6 +24,14 @@ class TestServers < Test::Unit::TestCase
     }
   end
 
+  def test_get_sock_name
+    EM.run {
+      sig = EM.start_server("127.0.0.1", @port)
+      port_num = Socket.unpack_sockaddr_in(EM.get_sockname(sig)).first
+      assert port_num == @port, "Didn't get the same port"
+    }
+  end
+
   def test_stop_server
     assert !server_alive?, "Port already in use"
     2.times { run_test_stop_server }

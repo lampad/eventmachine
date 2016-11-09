@@ -101,7 +101,7 @@ public class EventableDatagramChannel implements EventableChannel {
 	public void startTls() {
 		throw new RuntimeException ("TLS is unimplemented on this Channel");
 	}
-	
+		
 	public long getBinding() {
 		return binding;
 	}
