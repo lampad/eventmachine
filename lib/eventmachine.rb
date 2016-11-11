@@ -1539,7 +1539,7 @@ module EventMachine
       c = @conns[conn_binding] or raise ConnectionNotBound
       c.notify_writable
     when SslHandshakeCompleted
-      c = @conns[conn_binding] or raise ConnectionNotBound, "received SslHandshakeCompleted for unknown signature: #{conn_binding}"
+      c = @conns[conn_binding] or raise ConnectionNotBound
       c.ssl_handshake_completed
     when SslVerify
       c = @conns[conn_binding] or raise ConnectionNotBound

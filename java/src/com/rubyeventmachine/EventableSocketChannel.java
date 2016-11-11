@@ -55,8 +55,6 @@ public class EventableSocketChannel extends EventableChannel<ByteBuffer> {
 	SelectionKey channelKey;
 	SocketChannel channel;
 
-	long outboundS;
-
 	boolean bCloseScheduled;
 	boolean bConnectPending;
 	boolean bWatchOnly;
@@ -81,7 +79,6 @@ public class EventableSocketChannel extends EventableChannel<ByteBuffer> {
 		bNotifyReadable = false;
 		bNotifyWritable = false;
 		bIsServer = false;
-		outboundS = 0;
 	}
 	
 	public SocketChannel getChannel() {

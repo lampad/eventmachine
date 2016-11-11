@@ -269,19 +269,6 @@ module EventMachine
     @em.getConnectionCount
   end
 
-  def self.pause_connection(sig)
-    @em.pauseConnection(sig)
-  end
-  def self.resume_connection(sig)
-    @em.resumeConnection(sig)
-  end
-  def self.connection_paused?(sig)
-    @em.isConnectionPaused(sig)
-  end
-  def self._get_outbound_data_size(sig)
-    @em.getOutboundDataSize(sig)
-  end
-
   def self.set_tls_parms(sig, privkeyfile, certchainfile, verify_peer)
     keystore = KeyStoreBuilder.create privkeyfile, certchainfile unless (privkeyfile.empty? or certchainfile.empty?)
     @em.setTlsParms(sig, keystore, (!!verify_peer))
@@ -321,7 +308,6 @@ module KeyStoreBuilder
 
   def self.create(privkeyfile, certchainfile)
     self.init
-
     key_reader = FileReader.new privkeyfile
     key_pair = PEMReader.new(key_reader).read_object
 

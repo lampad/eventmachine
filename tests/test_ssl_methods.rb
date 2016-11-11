@@ -57,7 +57,6 @@ class TestSSLMethods < Test::Unit::TestCase
     assert($server_called_back)
     assert($client_called_back)
 
-
     assert_equal($server_cert_from_file, $server_cert_value.gsub("\r", ""))
     assert_equal($client_cert_from_file, $client_cert_value.gsub("\r", ""))
     assert($client_cipher_bits > 0)

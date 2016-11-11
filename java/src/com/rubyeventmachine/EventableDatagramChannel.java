@@ -41,14 +41,12 @@ public class EventableDatagramChannel extends EventableChannel<DatagramPacket> {
 	
 	DatagramChannel channel;
 	boolean bCloseScheduled;
-	long outboundS;
 	SocketAddress returnAddress;
 
 	public EventableDatagramChannel (DatagramChannel dc, long _binding, Selector sel, EventCallback callback) throws ClosedChannelException {
 		super(_binding, sel, callback);
 		channel = dc;
 		bCloseScheduled = false;
-		outboundS = 0;
 		
 		dc.register(selector, SelectionKey.OP_READ, this);
 	}
@@ -56,7 +54,6 @@ public class EventableDatagramChannel extends EventableChannel<DatagramPacket> {
 	public void scheduleOutboundData (ByteBuffer bb) {
  		try {
 			if ((!bCloseScheduled) && (bb.remaining() > 0)) {
-				outboundS += bb.remaining();
 				outboundQ.addLast(new DatagramPacket(bb, returnAddress));
  				channel.register(selector, SelectionKey.OP_WRITE | SelectionKey.OP_READ, this);
 			}
@@ -68,7 +65,6 @@ public class EventableDatagramChannel extends EventableChannel<DatagramPacket> {
 	public void scheduleOutboundDatagram (ByteBuffer bb, String recipAddress, int recipPort) {
  		try {
 			if ((!bCloseScheduled) && (bb.remaining() > 0)) {
-				outboundS += bb.remaining();
 				outboundQ.addLast(new DatagramPacket (bb, new InetSocketAddress (recipAddress, recipPort)));
  				channel.register(selector, SelectionKey.OP_WRITE | SelectionKey.OP_READ, this);
 			}
@@ -172,7 +168,6 @@ public class EventableDatagramChannel extends EventableChannel<DatagramPacket> {
 	public boolean isWatchOnly() { return false; }
 	public boolean isNotifyReadable() { return false; }
 	public boolean isNotifyWritable() { return false; }
-	public long getOutboundDataSize() { return outboundS; }
 
 	@Override
 	protected boolean handshakeNeeded() {

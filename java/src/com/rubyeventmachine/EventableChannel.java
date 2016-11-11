@@ -73,8 +73,6 @@ public abstract class EventableChannel<OutboundPacketType> {
 
 	protected abstract boolean writeOutboundData() throws IOException;
 
-	public abstract long getOutboundDataSize();
-
 	public abstract void setCommInactivityTimeout(long seconds);
 
 	public abstract Object[] getPeerName();
